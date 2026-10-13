@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Pelles Schatzsuche · Deutsch Klasse 4 („Sprache untersuchen“) · PERSONAL edition for Finn · v2 2026-10-11.1 (10 stations; adds the Deutschwissen worksheets of 11 Oct)
+<!-- Pelles Schatzsuche · Deutsch Klasse 4 („Sprache untersuchen“) · PERSONAL edition for Finn · v2.1 2026-10-11.2 (10 stations + replayable game „Pelles Spurensuche“; adds the Deutschwissen worksheets of 11 Oct)
      Single self-contained file: fonts (Andika, Fredoka – SIL Open Font License) and all drawings are embedded; no outside requests.
      Progress is saved in this browser only (localStorage key pinguin-schatzsuche-k4-v2; fish from v1 are carried over). -->
 <html lang="de">
@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; font-src data:; img-src data: blob:; base-uri 'none'; form-action 'none'">
-<meta name="pe-edition" content="personal · v2 · 2026-10-11.1">
+<meta name="pe-edition" content="personal · v2.1 · 2026-10-11.2">
 <meta name="theme-color" content="#e9f5fb">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Pelle">
@@ -353,6 +353,38 @@ table.rep th{font-family:'Fredoka';font-weight:600}
 .sb:after{content:"";position:absolute;left:22px;bottom:-12px;border:10px solid transparent;border-top-color:#9fb3c8;border-bottom:0}
 .task .pic{display:flex;justify-content:center;margin:0 0 12px}
 .task .pic svg{width:min(320px,100%);height:auto}
+/* game */
+.gamecard{background:linear-gradient(135deg,var(--card),var(--bg2))}
+.gcrow{display:flex;align-items:center;gap:14px}
+.gcpel{width:62px;height:78px;flex:none}.gcpel svg{width:100%;height:100%}
+.gctxt{flex:1;min-width:0}
+.gbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;flex-wrap:wrap}
+.gfishes{display:inline-flex;gap:6px}
+.gf svg{width:30px;height:19px;filter:grayscale(1);opacity:.35}
+.gf.on svg{filter:none;opacity:1}
+.gfield{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:46px 14px 18px;border-radius:20px;margin-bottom:16px;
+  background:linear-gradient(180deg,#bfe3f6 0%,#9fd2ee 100%);box-shadow:inset 0 0 0 3px #e8f6ff;overflow:hidden}
+.gfield:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 60px,rgba(255,255,255,.25) 60px 62px);pointer-events:none}
+.snow{position:relative;min-height:78px;border:0;border-radius:24px 24px 16px 16px;cursor:pointer;padding:8px 6px;line-height:1.2;
+  background:radial-gradient(circle at 50% 25%,#ffffff 0,#f6fbff 55%,#dcecf6 100%);box-shadow:0 6px 0 #b6d5ea,0 8px 10px rgba(30,80,120,.15);
+  font-family:'Andika',system-ui,sans-serif;font-size:17px;color:#1d2b44;word-break:break-word;transition:transform .15s}
+.snow:active{transform:translateY(2px)}
+.snow.dig{animation:gdig .38s}
+.snow.no{animation:gshake .5s;box-shadow:0 6px 0 #e9a3a6,0 0 0 3px #d64045}
+.snow.found{background:radial-gradient(circle at 50% 30%,#fffbe6 0,#ffe8a3 100%);box-shadow:0 6px 0 #e0b84a;cursor:default}
+.snow.found .gfi svg{width:34px;height:21px;display:block;margin:0 auto 2px}
+.snow.found .w{font-size:13px;opacity:.8}
+.snow.melt{opacity:.45}
+.gpelle{position:absolute;left:0;top:0;width:54px;height:68px;z-index:3;pointer-events:none;transition:transform .45s ease;filter:drop-shadow(0 3px 2px rgba(0,0,0,.2))}
+.gpelle svg{width:100%;height:100%}
+.gchest{position:absolute;left:50%;top:50%;width:170px;transform:translate(-50%,-50%);z-index:4;animation:pop .6s}
+.gchest svg{width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
+.big3 svg{width:40px;height:40px}
+@keyframes gdig{30%{transform:scale(.9) translateY(5px)}60%{transform:scale(1.04)}}
+@keyframes gshake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@media (max-width:560px){.gfield{gap:7px;padding:40px 8px 12px}.snow{min-height:66px;font-size:14px;border-radius:18px 18px 12px 12px;padding:6px 3px}.gcpel{width:48px;height:60px}.gpelle{width:38px;height:48px}.gmore{display:none}table.rep{display:block;overflow-x:auto;font-size:14px}table.rep th,table.rep td{padding:5px 4px}}
+.menu{grid-template-columns:repeat(6,1fr)}
+@media (max-width:640px){.menu{grid-template-columns:repeat(3,1fr)}}
 #print{display:none}
 @media print{
   body{background:#fff;font-size:12pt;color:#000}
@@ -1082,7 +1114,96 @@ const OBSERVED = [
   'Still blank in the folder: Satzglieder (Subjekt/Prädikat), Wörtliche Rede, Wortfeld und Wortfamilie, Wortarten bunt gemischt, Nomen (only first answers started), plus Ortsbestimmungen task 2–3 and Zeitbestimmungen task 2. The app uses similar but not identical items, so these sheets stay useful as extra practice.'
 ];
 
-return { K, K_ORDER, ROLE_NAMES, STAGES, TEST, FINAL, OBSERVED };
+
+/* ───────────── Spiel „Pelles Spurensuche“: Wortbank (Wort, Merkmale) + Hinweis-Arten ─────────────
+   Jedes Feld hat Merkmale. Ein Hinweis passt zu genau einem Merkmal; der Generator sorgt dafür,
+   dass auf dem Eisfeld für jeden Hinweis genau EIN Feld passt. */
+const GAME = {
+  words: [
+    ['er', 'P'], ['wir', 'P'], ['ihm', 'P'], ['uns', 'P'], ['du', 'P'], ['mich', 'P'],
+    ['der', 'Art'], ['die', 'Art'], ['das', 'Art'], ['eine', 'Art'], ['ein', 'Art'],
+    ['wachsen', 'Vinf'], ['rodeln', 'Vinf'], ['frieren', 'Vinf'], ['tauchen', 'Vinf'], ['malen', 'Vinf'], ['lachen', 'Vinf'],
+    ['kochen', 'Vinf'], ['backen', 'Vinf xlowN'], ['rühren', 'Vinf'], ['niesen', 'Vinf'], ['hungern', 'Vinf xfeld_essen'], ['würfeln', 'Vinf'], ['toben', 'Vinf xfeld_gehen'],
+    ['schlafen', 'Vinf'], ['sitzen', 'Vinf'], ['springen', 'Vinf xfeld_gehen'], ['liegen', 'Vinf'],
+    ['verlieren', 'Vinf ver'], ['verstecken', 'Vinf ver'], ['verschieben', 'Vinf ver'],
+    ['mitspielen', 'Vinf fam_spiel'], ['abfahren', 'Vinf fam_fahr'],
+    ['mampfen', 'Vinf feld_essen'], ['naschen', 'Vinf feld_essen'], ['verzehren', 'Vinf feld_essen ver'], ['futtern', 'Vinf feld_essen'],
+    ['flüstern', 'Vinf feld_sagen'], ['rufen', 'Vinf feld_sagen'], ['antworten', 'Vinf feld_sagen xlowN'], ['berichten', 'Vinf feld_sagen'], ['schreien', 'Vinf feld_sagen'],
+    ['schleichen', 'Vinf feld_gehen'], ['watscheln', 'Vinf feld_gehen'], ['rennen', 'Vinf feld_gehen xlowN'], ['spazieren', 'Vinf feld_gehen'], ['wandern', 'Vinf feld_gehen'],
+    ['kalt', 'A'], ['bunt', 'A'], ['leise', 'A'], ['schmal', 'A xform'], ['weich', 'A'], ['glatt', 'A'], ['nass', 'A xlowN'], ['laut', 'A xlowN'], ['süße', 'A xlowN'],
+    ['groß', 'A'], ['hoch', 'A xlowN'], ['gut', 'A xlowN'],
+    ['größer', 'A Ah'], ['höher', 'A Ah'], ['kälter', 'A Ah'], ['besser', 'A Ah'], ['wärmer', 'A Ah'],
+    ['am größten', 'A Ahs'], ['am höchsten', 'A Ahs'], ['am besten', 'A Ahs'], ['am kältesten', 'A Ahs'],
+    ['eiskalt', 'A Ac'], ['schneeweiß', 'A Ac'], ['blitzschnell', 'A Ac'], ['federleicht', 'A Ac'], ['pechschwarz', 'A Ac'], ['dunkelgrün', 'A Ac'],
+    ['freundlich', 'A Alich'], ['gefährlich', 'A Alich'], ['eisig', 'A Alich'], ['windig', 'A Alich'], ['kräftig', 'A Alich'], ['mutig', 'A Alich'],
+    ['rund', 'A form'], ['oval', 'A form xlowN'], ['eckig', 'A form Alich'], ['zylinderförmig', 'A form Ac Alich'], ['kugelförmig', 'A form Ac Alich'],
+    ['metallisch', 'A material'], ['hölzern', 'A material'], ['gläsern', 'A material'],
+    ['verspielt', 'A fam_spiel xver'], ['spielerisch', 'A fam_spiel'],
+    ['die Freude', 'N Nabs'], ['die Angst', 'N Nabs'], ['der Mut', 'N Nabs'], ['das Glück', 'N Nabs'], ['die Liebe', 'N Nabs'], ['die Gefahr', 'N Nabs'],
+    ['die Wut', 'N Nabs'], ['die Hoffnung', 'N Nabs ung'], ['der Spaß', 'N Nabs'], ['die Freiheit', 'N Nabs'], ['die Dunkelheit', 'N Nabs'],
+    ['der Schlitten', 'N'], ['die Mütze', 'N'], ['der Stein', 'N'], ['das Schiff', 'N'], ['der Eisbär', 'N'], ['die Robbe', 'N'], ['der Tiger', 'N'],
+    ['die Jacke', 'N'], ['der Stuhl', 'N'], ['der Ball', 'N'], ['die Puppe', 'N'], ['das Auto', 'N'], ['der Zug', 'N'], ['die Straße', 'N'], ['das Deutsch', 'N xNabs'],
+    ['der Glückskäfer', 'N Fs'], ['der Geburtstagskuchen', 'N Fs xfeld_essen'], ['der Adventskalender', 'N Fs'], ['das Arbeitsheft', 'N Fs'], ['der Liebesbrief', 'N Fs'],
+    ['der Schneemann', 'N'], ['die Winterjacke', 'N'], ['der Eisberg', 'N'], ['die Zahnbürste', 'N'],
+    ['die Tiere', 'N Ober'], ['die Kleidung', 'N Ober ung'], ['das Obst', 'N Ober xfeld_essen'], ['die Möbel', 'N Ober'], ['das Gemüse', 'N Ober xfeld_essen'],
+    ['der Apfel', 'N xfeld_essen'], ['die Maus', 'N'], ['der Baum', 'N xOber'], ['die Robben', 'N'],
+    ['die Äpfel', 'N PlU xfeld_essen'], ['die Mäuse', 'N PlU'], ['die Bäume', 'N PlU xOber'], ['die Füchse', 'N PlU'], ['die Häuser', 'N PlU'], ['die Kühe', 'N PlU'],
+    ['die Rettung', 'N ung Nabs'], ['die Wanderung', 'N ung Nabs xfeld_gehen'], ['die Zeichnung', 'N ung xNabs'], ['die Entdeckung', 'N ung Nabs'], ['die Warnung', 'N ung Nabs'],
+    ['das Spielzeug', 'N fam_spiel xOber'], ['der Spieler', 'N fam_spiel'], ['das Brettspiel', 'N fam_spiel xOber'],
+    ['das Fahrrad', 'N fam_fahr'], ['die Abfahrt', 'N fam_fahr xNabs'], ['der Fahrer', 'N fam_fahr'], ['die Fahrkarte', 'N fam_fahr'],
+    ['aufgaben', 'lowN wrong'], ['affen', 'lowN wrong xOber'], ['vogel', 'lowN wrong xOber'], ['flasche', 'lowN wrong'], ['schatzkarte', 'lowN wrong'],
+    ['gewessen', 'wrong xPerf'], ['mettalisch', 'wrong xA xmaterial'], ['Süse', 'wrong xA xNabs xlowN'], ['färt', 'wrong xfam_fahr xPräs'], ['spähter', 'wrong xA xAh'], ['ligen', 'wrong xVinf'], ['Deutsh', 'wrong xNabs'], ['bastellte', 'wrong xPrät'],
+    ['Lea sammelte', 'Prät'], ['Pelle flog', 'Prät'], ['Tom bastelte', 'Prät'], ['Mia lief', 'Prät feld_gehen'], ['Ben schrieb', 'Prät'],
+    ['Lea hat gesammelt', 'Perf'], ['Pelle ist geflogen', 'Perf'], ['Tom hat gebastelt', 'Perf'], ['Mia ist gelaufen', 'Perf feld_gehen'], ['Ben hat geschrieben', 'Perf'],
+    ['Lea sammelt', 'Präs'], ['Pelle fliegt', 'Präs'], ['Tom bastelt', 'Präs'], ['Mia läuft', 'Präs feld_gehen'], ['Ben fährt', 'Präs fam_fahr'],
+    ['am Mittwoch', 'Z xNabs'], ['seit gestern', 'Z'], ['eine Stunde', 'Z xNabs'], ['im Sommer', 'Z xNabs'], ['nach dem Frühstück', 'Z xNabs'],
+    ['im Iglu', 'O'], ['nach Italien', 'O'], ['aus der Schule', 'O'], ['am Strand', 'O'], ['hinter dem Leuchtturm', 'O'],
+    ['Wann?', 'q_zeit'], ['Wie lange?', 'q_dauer'], ['Seit wann?', 'q_seit'], ['Wo?', 'q_ort'], ['Woher?', 'q_herkunft'], ['Wohin?', 'q_ziel'], ['Wer oder was?', 'q_subj'], ['Was tut …?', 'q_praed xPräs'],
+    ['ruft Pelle', 'rbs feld_sagen xPräs'], ['fragt die Robbe', 'rbs feld_sagen xPräs'], ['sagt der Wal', 'rbs feld_sagen xPräs'], ['flüstert Mia', 'rbs feld_sagen xPräs'],
+    ['„Komm her!“', 'wr xPräs'], ['„Ich habe Hunger.“', 'wr xPräs'], ['„Wo ist die Karte?“', 'wr xPräs'],
+    [':', 'colon'], [',', 'comma'], ['.', 'dot'], ['?', 'qmark'], ['„', 'openq']
+  ],
+  cats: [
+    { id: 'pron', st: 1, tag: 'P', clue: 'bei dem Feld, auf dem nur ein <b>Pronomen</b> steht', hint: 'Pronomen stehen für ein Nomen: ich, du, er, sie, wir, ihm, uns …', near: ['der', 'die', 'eine', 'die Robbe'] },
+    { id: 'art', st: 1, tag: 'Art', clue: 'bei dem Feld, auf dem nur ein <b>Artikel</b> steht', hint: 'Artikel sind Begleiter: der, die, das, ein, eine.', near: ['er', 'wir', 'ihm'] },
+    { id: 'grund', st: 1, tag: 'Vinf', clue: 'bei der <b>Grundform eines Verbs</b>', hint: 'Die Grundform steht so im Wörterbuch und endet auf -en oder -n: wachsen, rodeln.', near: ['Mia läuft', 'Lea sammelte', 'Tom bastelt', 'die Zeichnung'] },
+    { id: 'adj', st: 1, tag: 'A', clue: 'beim <b>Adjektiv</b>', hint: 'Adjektive sagen, wie etwas ist. Sehr-Probe: „sehr …“ passt.', near: ['rodeln', 'die Freude', 'malen', 'der Stein'] },
+    { id: 'lowN', st: 1, tag: 'lowN', clue: 'beim <b>Nomen, das falsch klein geschrieben</b> ist', hint: 'Artikel-Probe: Bei welchem kleinen Wort passt der, die oder das davor?', near: ['der Mut', 'die Robbe', 'wachsen', 'leise'] },
+    { id: 'abs', st: 2, tag: 'Nabs', clue: 'beim <b>abstrakten Nomen</b>', hint: 'Abstrakte Nomen kann man nicht anfassen: Gefühle und Gedanken.', near: ['der Schlitten', 'die Mütze', 'der Stein', 'der Eisbär'] },
+    { id: 'fs', st: 2, tag: 'Fs', clue: 'beim Nomen mit <b>Fugen-s</b>', hint: 'Sprich langsam: Glück-s-käfer.', near: ['der Schneemann', 'die Winterjacke', 'der Eisberg', 'die Zahnbürste'] },
+    { id: 'ober', st: 2, tag: 'Ober', clue: 'beim <b>Oberbegriff</b>', hint: 'Ein Oberbegriff ist ein Wort für eine ganze Gruppe, z. B. Tiere.', near: ['der Tiger', 'die Jacke', 'der Apfel', 'der Stuhl'] },
+    { id: 'plu', st: 2, tag: 'PlU', clue: 'bei der <b>Mehrzahl mit Umlaut</b>', hint: 'der Apfel → die Äpfel: In der Mehrzahl kommt ein ä, ö oder ü dazu.', near: ['der Apfel', 'die Maus', 'der Baum', 'die Robben'] },
+    { id: 'praet', st: 3, tag: 'Prät', clue: 'beim Satz in der <b>1. Vergangenheit</b> (Präteritum)', hint: '1. Vergangenheit = ein Verb-Wort: sammelte, flog.', near: ['Lea sammelt', 'Tom hat gebastelt', 'Pelle fliegt', 'Ben hat geschrieben'] },
+    { id: 'perf', st: 3, tag: 'Perf', clue: 'beim Satz in der <b>2. Vergangenheit</b> (Perfekt)', hint: '2. Vergangenheit = zwei Teile: hat gesammelt, ist geflogen.', near: ['Lea sammelte', 'Pelle flog', 'Tom bastelt', 'Ben schrieb'] },
+    { id: 'praes', st: 3, tag: 'Präs', clue: 'beim Satz in der <b>Gegenwart</b> (Präsens)', hint: 'Gegenwart: Es passiert jetzt – sammelt, fliegt, läuft.', near: ['Lea sammelte', 'Pelle ist geflogen', 'Tom bastelte', 'Ben schrieb'] },
+    { id: 'hoeher', st: 4, tag: 'Ah', clue: 'bei der <b>Höherstufe</b>', hint: 'Höherstufe: größer, kälter – mit -er.', near: ['groß', 'hoch', 'am größten', 'am besten'] },
+    { id: 'hoechst', st: 4, tag: 'Ahs', clue: 'bei der <b>Höchststufe</b>', hint: 'Höchststufe: am größten, am besten.', near: ['größer', 'höher', 'groß', 'gut'] },
+    { id: 'acomp', st: 4, tag: 'Ac', clue: 'beim <b>zusammengesetzten Adjektiv</b>', hint: 'Zwei Wörter in einem Adjektiv: eis + kalt = eiskalt.', near: ['kalt', 'schmal', 'weich', 'leise'] },
+    { id: 'ung', st: 5, tag: 'ung', clue: 'beim Wort mit der <b>Nachsilbe -ung</b>', hint: 'Die Nachsilbe -ung steht am Ende: die Rettung.', near: ['die Freiheit', 'die Dunkelheit', 'der Mut'] },
+    { id: 'lich', st: 5, tag: 'Alich', clue: 'beim Adjektiv mit der Nachsilbe <b>-lich</b> oder <b>-ig</b>', hint: 'Schau auf das Ende: freundlich, eisig …', near: ['bunt', 'leise', 'spielerisch', 'metallisch'] },
+    { id: 'ver', st: 5, tag: 'ver', clue: 'beim Verb mit der <b>Vorsilbe ver-</b>', hint: 'Die Vorsilbe ver- steht vorne: verlieren.', near: ['rodeln', 'malen', 'die Rettung', 'die Freude'] },
+    { id: 'spiel', st: 6, tag: 'fam_spiel', clue: 'beim Feld mit einem Wort aus der <b>Wortfamilie spielen</b>', hint: 'Im Wort steckt der Wortstamm spiel.', near: ['der Ball', 'würfeln', 'der Spaß', 'toben', 'die Puppe'] },
+    { id: 'fahr', st: 6, tag: 'fam_fahr', clue: 'beim Feld mit einem Wort aus der <b>Wortfamilie fahren</b>', hint: 'Im Wort steckt der Wortstamm fahr (manchmal mit ä: fähr).', near: ['das Auto', 'der Zug', 'die Straße'] },
+    { id: 'essen', st: 6, tag: 'feld_essen', clue: 'beim Feld mit einem Wort aus dem <b>Wortfeld essen</b>', hint: 'Welches Wort bedeutet so etwas Ähnliches wie essen?', near: ['kochen', 'backen', 'rühren', 'niesen'] },
+    { id: 'sagen', st: 6, tag: 'feld_sagen', clue: 'beim Feld mit einem Wort aus dem <b>Wortfeld sagen</b>', hint: 'Welches Wort beschreibt, wie jemand spricht?', near: ['schlafen', 'springen', 'malen'] },
+    { id: 'gehen', st: 6, tag: 'feld_gehen', clue: 'beim Feld mit einem Wort aus dem <b>Wortfeld gehen</b>', hint: 'Welches Wort beschreibt, wie man sich zu Fuß bewegt?', near: ['sitzen', 'schlafen', 'malen'] },
+    { id: 'zeit', st: 7, tag: 'Z', clue: 'bei der <b>Zeitbestimmung</b>', hint: 'Zeitbestimmung: Wann? Seit wann? Wie lange?', near: ['im Iglu', 'am Strand', 'nach Italien'] },
+    { id: 'ort', st: 7, tag: 'O', clue: 'bei der <b>Ortsbestimmung</b>', hint: 'Ortsbestimmung: Wo? Woher? Wohin?', near: ['am Mittwoch', 'seit gestern', 'im Sommer'] },
+    { id: 'qdauer', st: 7, tag: 'q_dauer', clue: 'bei der Frage, mit der du „<b>eine Stunde</b>“ erfragst', hint: '„eine Stunde“ ist eine Dauer.', near: ['Wann?', 'Seit wann?', 'Wo?'] },
+    { id: 'qziel', st: 7, tag: 'q_ziel', clue: 'bei der Frage, mit der du „<b>nach Italien</b>“ erfragst', hint: 'Wohin geht die Reise?', near: ['Wo?', 'Woher?', 'Wann?'] },
+    { id: 'qseit', st: 7, tag: 'q_seit', clue: 'bei der Frage, mit der du „<b>seit gestern</b>“ erfragst', hint: '„Seit …“ erfragst du mit „Seit …?“', near: ['Wann?', 'Wie lange?', 'Woher?'] },
+    { id: 'qsubj', st: 7, tag: 'q_subj', clue: 'bei der Frage nach dem <b>Subjekt</b> (Satzgegenstand)', hint: 'Nach dem Satzgegenstand fragst du: Wer oder was …?', near: ['Was tut …?', 'Wo?', 'Wann?'] },
+    { id: 'form', st: 8, tag: 'form', clue: 'beim Adjektiv, das eine <b>Form</b> beschreibt', hint: 'Formen: rund, eckig, oval …', near: ['metallisch', 'gläsern', 'bunt'] },
+    { id: 'material', st: 8, tag: 'material', clue: 'beim Adjektiv, das ein <b>Material</b> beschreibt', hint: 'aus Metall → metallisch, aus Holz → hölzern', near: ['rund', 'oval', 'kalt'] },
+    { id: 'rbs', st: 9, tag: 'rbs', clue: 'beim <b>Redebegleitsatz</b>', hint: 'Der Redebegleitsatz sagt, wer spricht: ruft Pelle.', near: ['„Komm her!“', '„Ich habe Hunger.“'] },
+    { id: 'wr', st: 9, tag: 'wr', clue: 'bei der <b>wörtlichen Rede</b>', hint: 'Die wörtliche Rede steht in Anführungszeichen „ … “.', near: ['ruft Pelle', 'sagt der Wal'] },
+    { id: 'colon', st: 9, tag: 'colon', clue: 'beim Zeichen, das nach „<b>Pelle sagt</b>“ kommt (Begleitsatz vorne)', hint: 'Begleitsatz vorne: Pelle sagt … „Hallo!“', near: [',', '.', '?', '„'] },
+    { id: 'komma', st: 9, tag: 'comma', clue: 'beim Zeichen nach dem Schlusszeichen, wenn der <b>Begleitsatz hinten</b> steht', hint: '„Hallo“ … sagt Pelle.', near: [':', '.', '?', '„'] },
+    { id: 'wrong', st: 10, tag: 'wrong', clue: 'beim Wort, das <b>falsch geschrieben</b> ist', hint: 'Prüfe jedes Wort genau: Großschreibung, ß, h, ie, doppelte Buchstaben.', near: ['metallisch', 'liegen', 'das Deutsch', 'süße', 'gefährlich'] }
+  ]
+};
+
+return { K, K_ORDER, ROLE_NAMES, STAGES, TEST, FINAL, OBSERVED, GAME };
 })();
 
 </script>
@@ -1146,6 +1267,7 @@ function pelle(o) {
     <ellipse cx="39" cy="69" rx="6" ry="3.5" fill="#ffb3c1" opacity=".85"/><ellipse cx="81" cy="69" rx="6" ry="3.5" fill="#ffb3c1" opacity=".85"/>
     <path d="M51 66 Q60 61 69 66 Q60 77 51 66 Z" fill="#ff9f43"/>
     ${neck}${glasses}${head}
+    ${o.tool === 'schaufel' ? '<g transform="rotate(28 104 96)"><rect x="101" y="52" width="6" height="58" rx="3" fill="#8a5a2b"/><rect x="96" y="50" width="16" height="6" rx="3" fill="#8a5a2b"/><path d="M93 108 h22 l-3 20 q-8 8 -16 0 z" fill="#b8c4d2" stroke="#6f7c8c" stroke-width="2.5" stroke-linejoin="round"/></g>' : ''}
   </svg>`;
 }
 
@@ -1162,6 +1284,7 @@ const icon = {
   back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   lock: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" fill="#ffd166" stroke="#1d2b44" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#1d2b44" stroke-width="1.8" fill="none"/></svg>',
   star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.8 6.3.8-4.6 4.4 1.2 6.3L12 17l-5.7 3.1 1.2-6.3L2.9 9.4l6.3-.8z" fill="#ffc83d" stroke="#d99a00" stroke-width="1.2" stroke-linejoin="round"/></svg>',
+  dig: '<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="19" rx="9" ry="3.5" fill="#dcecf6" stroke="#1d2b44" stroke-width="1.4"/><path d="M15 3l-4 11" stroke="#8a5a2b" stroke-width="2.4" stroke-linecap="round"/><path d="M8.5 12.5l5 2-1.5 4-5-2z" fill="#b8c4d2" stroke="#1d2b44" stroke-width="1.4" stroke-linejoin="round"/></svg>',
   starOff: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.8 6.3.8-4.6 4.4 1.2 6.3L12 17l-5.7 3.1 1.2-6.3L2.9 9.4l6.3-.8z" fill="none" stroke="#9aa9bb" stroke-width="1.4" stroke-linejoin="round"/></svg>'
 };
 
@@ -1449,7 +1572,7 @@ return { pelle, icon, islandMap, pelleSpot, treasureMap, chest, goldfish, compas
 const D = window.PE_DATA, A = window.PE_ART;
 const KEY = 'pinguin-schatzsuche-k4-v2';
 const KEY_V1 = 'pinguin-schatzsuche-k4-v1';
-const VERSION = 'v2 · 2026-10-11.1';
+const VERSION = 'v2.1 · 2026-10-11.2';
 const EDITION = 'personal';
 const $ = (s, r) => (r || document).querySelector(s);
 const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
@@ -1497,7 +1620,8 @@ const PST_EN = { none: 'not done', written: 'written – to check', ok: 'correct
 function defaults() {
   return { v: 1, name: 'Finn', fish: 0, started: false, found: 0, pellePos: 0, stages: {}, tasks: {}, paper: {}, log: [], tests: [], testRun: null,
     final: { ort: false, zeit: false, subj: false, stone: false, opened: false }, wear: { head: null, neck: null, eyes: null }, self: {}, pin: '', theme: 'auto',
-    kiste: {}, fishGiven: {}, clueMiss: {}, created: now(), migratedFrom: null };
+    kiste: {}, fishGiven: {}, clueMiss: {}, created: now(), migratedFrom: null,
+    game: { round: null, rounds: 0, best: 0, byCat: {}, hist: [], fishDay: { d: '', n: 0 } } };
 }
 let STORAGE_OK = true;
 function load() {
@@ -1933,9 +2057,13 @@ function showHome(opts) {
   view().innerHTML = `
     <div class="card mapcard" id="mapcard">${A.islandMap(mapState())}</div>
     <div class="card" id="statuscard">${statusHTML()}</div>
+    <div class="card gamecard"><div class="gcrow"><div class="gcpel">${A.pelle({ wear: S.wear, tool: 'schaufel' })}</div>
+      <div class="gctxt"><h3>Spiel: Pelles Spurensuche</h3><div class="small">Grabe auf dem Eisfeld nach Fischen – jeder Hinweis ist ein Sprach-Rätsel. ${S.game.rounds ? `Runden: ${S.game.rounds} · Bestes Ergebnis: ${starsHTML(S.game.best)}` : 'Neue Hinweis-Arten kommen mit jeder Station dazu.'}</div></div>
+      <button class="btn" data-act="game">${S.game.round && !S.game.round.done ? 'Weiterspielen' : 'Spielen'} ›</button></div></div>
     <div class="card"><div class="row" style="margin-bottom:6px"><h3>Schatzkarte</h3><span class="small">${countGot()} von ${N} Stücken</span></div>
       <div id="tmapbox">${A.treasureMap(tmapOpts({ roles: S.final.subj }))}</div></div>
     <div class="menu">
+      <button class="mbtn" data-act="game">${A.icon.dig}Spurensuche</button>
       <button class="mbtn" data-act="merkheft">${A.icon.book}Merkheft</button>
       <button class="mbtn" data-act="kiste">${A.icon.box}Fehler-Kiste<span class="cnt hidden" id="cnt-kiste"></span></button>
       <button class="mbtn" data-act="check">${A.icon.list}Meine Checkliste</button>
@@ -2012,6 +2140,7 @@ function introModal() {
     <p>Ein Sturm hat meine alte <b>Schatzkarte</b> in <b>${N} Stücke</b> zerrissen und über die ganze Insel geweht. Hilfst du mir?</p>
     ${S.migratedFrom ? `<p class="fb ok">Das ist die neue Version der Schatzsuche mit mehr Stationen. Deine <b>${S.migratedFrom.fish} Fische</b> und Pelles Sachen aus dem Schrank hast du behalten!</p>` : ''}
     <p>An jedem Ort wartet eine <b>Sprach-Station</b> mit 10 Aufgaben. Wenn du sie schaffst, bekommst du ein Kartenstück. Meine Hinweise sagen dir, wo du als Nächstes suchen musst.</p>
+    <p>⛏️ Zwischendurch kannst du <b>Pelles Spurensuche</b> spielen: Fische ausgraben mit Sprach-Rätseln.</p>
     <p>✏️ <b>Heft-Aufgaben</b> schreibst du in dein Heft. Mama oder Papa schauen sie sich an.<br>${A.icon.fish.replace('<svg', '<svg style="width:26px;height:16px;vertical-align:middle"')} Für jede richtige Antwort bekommst du <b>Fische</b> – damit kannst du Pelle anziehen.</p>
     <div class="actions" style="justify-content:center"><button class="btn" data-x="go">Los geht’s!</button></div>`, { dismiss: false });
   $('[data-x="go"]', m).addEventListener('click', () => { S.started = true; save(); closeModal(); });
@@ -2103,7 +2232,7 @@ function stageClear() {
     <div id="clearmap" style="max-width:680px;margin:0 auto">${A.treasureMap(tmapOpts())}</div>
     <p>${ok1} von ${screen.length} Bildschirm-Aufgaben beim ersten Versuch richtig.${Object.keys(S.kiste).length ? ' Was noch nicht geklappt hat, wartet in der Fehler-Kiste.' : ''}</p>
     <p class="small">Deine 3 Heft-Aufgaben (${st.tasks.filter(t => t.type === 'paper').map(t => t.id).join(', ')}) schaut sich Mama oder Papa an.</p>
-    <div class="actions" style="justify-content:center"><button class="btn" data-x="home">${CUR.n < N ? 'Zur Karte – nächster Hinweis' : 'Zur Karte'} ›</button></div></div>`;
+    <div class="actions" style="justify-content:center"><button class="btn" data-x="home">${CUR.n < N ? 'Zur Karte – nächster Hinweis' : 'Zur Karte'} ›</button><button class="btn ghost" data-act="game">Erst eine Runde Spurensuche</button></div></div>`;
   const p = $(`#clearmap .piece[data-piece="${st.n}"]`); if (p) p.classList.add('new');
   const n = CUR.n;
   $('[data-x="home"]').addEventListener('click', () => { showHome({ newPiece: n }); window.scrollTo(0, 0); });
@@ -2225,6 +2354,151 @@ function diplomaModal() {
   const m = modal(`${diplomaHTML()}<div class="actions" style="justify-content:center"><button class="btn" data-x="print">Drucken</button><button class="btn ghost" data-x="close">Schließen</button></div>`, { wide: true });
   $('[data-x="print"]', m).addEventListener('click', () => printHTML(diplomaHTML()));
   $('[data-x="close"]', m).addEventListener('click', () => { closeModal(); });
+}
+
+
+/* ───────────── Spiel: Pelles Spurensuche ───────────── */
+const GW = {}; D.GAME.words.forEach(([w, tags]) => { GW[w] = { w, tags: tags.split(' ') }; });
+const GWORDS = Object.values(GW);
+const GCAT = {}; D.GAME.cats.forEach(c => { GCAT[c.id] = c; });
+const GAME_FISH_DAY = 15;
+function gameCats() { return D.GAME.cats.filter(c => c.st === 1 || stageDone(c.st)); }
+function pickCats(cats, size) {
+  const byStation = {}; cats.forEach(c => { (byStation[c.st] = byStation[c.st] || []).push(c); });
+  const out = [];
+  for (const st of shuffle(Object.keys(byStation))) { if (out.length >= size) break; out.push(shuffle(byStation[st])[0]); }
+  const rest = shuffle(cats.filter(c => !out.includes(c)));
+  while (out.length < size && rest.length) out.push(rest.pop());
+  // practise weak spots: swap in the most-missed clue type now and then
+  const bc = S.game.byCat || {};
+  const weak = cats.filter(c => !out.includes(c) && bc[c.id] && bc[c.id].miss > bc[c.id].ok).sort((a, b) => bc[b.id].miss - bc[a.id].miss)[0];
+  if (weak && Math.random() < 0.6) out[out.length - 1] = weak;
+  return shuffle(out);
+}
+function makeRound() {
+  const cats = gameCats(); const size = Math.min(5, cats.length);
+  const has = (w, p) => w.tags.includes(p);
+  // x-tags mark words a child could reasonably read as matching (e.g. 'laut' → der Laut): they never serve as a target or distractor for that clue
+  const blocks = (w, p) => has(w, p) || has(w, 'x' + p);
+  for (let attempt = 0; attempt < 500; attempt++) {
+    const chosen = pickCats(cats, size);
+    const preds = chosen.map(c => c.tag);
+    const targets = []; let ok = true;
+    for (const c of chosen) {
+      const cand = GWORDS.filter(w => has(w, c.tag) && preds.filter(p => blocks(w, p)).length === 1 && !targets.includes(w));
+      if (!cand.length) { ok = false; break; }
+      targets.push(cand[Math.floor(Math.random() * cand.length)]);
+    }
+    if (!ok) continue;
+    const pool = GWORDS.filter(w => !preds.some(p => blocks(w, p)) && !targets.includes(w) && !has(w, 'wrong')); // misspellings only ever appear as the answer to a spelling clue
+    const near = shuffle(Array.from(new Set(chosen.reduce((a, c) => a.concat(c.near || []), []))).map(x => GW[x]).filter(w => w && pool.includes(w))).slice(0, 8);
+    const rest = shuffle(pool.filter(w => !near.includes(w)));
+    const distract = near.concat(rest).slice(0, 16 - size);
+    if (distract.length < 16 - size) continue;
+    return { cats: chosen.map(c => c.id), targets: targets.map(w => w.w), board: shuffle(targets.concat(distract)).map(w => w.w), step: 0, misses: 0, perClue: chosen.map(() => 0), found: [], tried: [], pelle: -1, hint: false, done: false, at: now() };
+  }
+  return null;
+}
+function gameFish(n) {
+  const today = new Date().toISOString().slice(0, 10);
+  if (S.game.fishDay.d !== today) S.game.fishDay = { d: today, n: 0 };
+  const give = Math.max(0, Math.min(n, GAME_FISH_DAY - S.game.fishDay.n));
+  if (!give) return 0;
+  const before = S.fish; S.fish += give; S.game.fishDay.n += give; updateFish(true);
+  WARD.forEach(w => { if (before < w.need && S.fish >= w.need) setTimeout(() => toast(`Neu in Pelles Schrank: ${w.name}!`, 3200), 900); });
+  return give;
+}
+function clueShort(id, html) {
+  const c = GCAT[id]; if (!c) return id;
+  const t = c.clue.replace(/^(bei der |beim |bei dem )/, '').replace(/^Feld, auf dem nur ein /, '').replace(/^Feld mit einem /, '').replace(/ steht$/, '');
+  const out = t.charAt(0).toUpperCase() + t.slice(1);
+  return html ? out : strip(out);
+}
+function starsFor(m) { return m === 0 ? 3 : m <= 2 ? 2 : 1; }
+function showGame(fresh) {
+  CUR = { kind: 'game' };
+  if (fresh || !S.game.round || S.game.round.done) { S.game.round = makeRound(); save(); }
+  window.scrollTo(0, 0);
+  renderGame();
+}
+let GBUSY = false;
+function renderGame() {
+  const R = S.game.round; const total = R.targets.length; const done = R.done;
+  const c = GCAT[R.cats[Math.min(R.step, total - 1)]];
+  const nCats = gameCats().length;
+  const fishes = R.targets.map((_, i) => `<span class="gf${i < R.step ? ' on' : ''}">${A.icon.fish}</span>`).join('');
+  view().innerHTML = `<div class="shead"><button class="backbtn" data-act="home" aria-label="Zur Karte">${A.icon.back}</button>
+    <div class="t"><h2>Pelles Spurensuche</h2><div class="k">Runde ${S.game.rounds + (done ? 0 : 1)} · ${nCats} Hinweis-Arten freigeschaltet${nCats < D.GAME.cats.length ? '<span class="gmore"> – mit jeder Station kommen neue dazu</span>' : ''}</div></div>
+    <button class="btn ghost sm" data-act="gamehelp" aria-label="So geht's">?</button></div>
+    <div class="card gclue">${done ? '' : `<div class="clue"><div class="av">${A.pelle({ wear: S.wear, tool: 'schaufel', mood: R.hint ? 'think' : 'happy' })}</div>
+      <div class="bubble"><div class="lab">Pelles Zettel · Hinweis ${R.step + 1} von ${total}</div>Unter einem Feld liegt ein Fisch versteckt. Grabe ${c.clue}!
+      ${R.hint ? `<div class="fb hint"><b>Tipp:</b> ${esc(c.hint)}</div>` : ''}</div></div>`}
+      <div class="gbar"><span class="gfishes">${fishes}</span><span class="small">Grabungen daneben: <b>${R.misses}</b></span></div></div>
+    <div class="gfield" id="gfield">${R.board.map((w, i) => {
+      const f = R.found.indexOf(i); const cls = f >= 0 ? ' found' : (done ? ' melt' : '');
+      return `<button class="snow${cls}" data-i="${i}" ${f >= 0 || done ? 'disabled' : ''}>${f >= 0 ? `<span class="gfi">${A.icon.fish}</span><span class="w">${esc(w)}</span>` : `<span class="w">${esc(w)}</span>`}</button>`; }).join('')}
+      <div class="gpelle" id="gpelle">${A.pelle({ wear: S.wear, tool: 'schaufel' })}</div>
+      ${done ? `<div class="gchest">${A.chest(true)}</div>` : ''}</div>
+    <div id="gresult"></div>`;
+  const field = $('#gfield'); const pel = $('#gpelle');
+  const place = (i, instant) => {
+    let x, y;
+    if (i < 0) { x = field.clientWidth / 2 - pel.offsetWidth / 2; y = field.clientHeight - pel.offsetHeight * 0.88; } else { const b = $(`.snow[data-i="${i}"]`, field); x = b.offsetLeft + b.offsetWidth - pel.offsetWidth * 0.68; y = b.offsetTop - pel.offsetHeight * 0.66; }
+    if (instant) { pel.style.transition = 'none'; pel.style.transform = `translate(${x}px, ${y}px)`; void pel.offsetWidth; pel.style.transition = ''; } else pel.style.transform = `translate(${x}px, ${y}px)`;
+  };
+  place(R.pelle, true);
+  if (done) { gameResult(); return; }
+  field.addEventListener('click', (e) => {
+    const b = e.target.closest('.snow'); if (!b || b.disabled || GBUSY) return;
+    const i = +b.dataset.i; GBUSY = true; R.pelle = i; place(i);
+    const wait = reduceMotion ? 10 : 470;
+    setTimeout(() => {
+      b.classList.add('dig');
+      setTimeout(() => {
+        b.classList.remove('dig');
+        const cat = R.cats[R.step]; const bc = S.game.byCat[cat] = S.game.byCat[cat] || { ok: 0, miss: 0 };
+        if (R.board[i] === R.targets[R.step]) {
+          const first = R.perClue[R.step] === 0;
+          R.found.push(i); bc.ok++; R.step++; R.hint = false;
+          if (first) gameFish(1);
+          logIt({ id: 'G:' + cat, mode: 'game', r: first ? 'ok1' : 'ok2', a1: R.board[i] });
+          if (R.step >= total) { finishGame(); } else { save(); toast(first ? 'Fisch gefunden! Hier ist der nächste Zettel.' : 'Gefunden! Weiter geht’s.', 1800); renderGame(); }
+        } else {
+          R.misses++; R.perClue[R.step]++; bc.miss++; R.hint = true; R.tried.push(i);
+          logIt({ id: 'G:' + cat, mode: 'game', r: 'miss', a1: R.board[i] });
+          save(); b.classList.add('no'); toast(`Nur Schnee unter „${R.board[i]}“! Lies den Tipp.`, 2200);
+          setTimeout(() => { GBUSY = false; renderGame(); }, 650);
+          return;
+        }
+        GBUSY = false;
+      }, reduceMotion ? 10 : 380);
+    }, wait);
+  });
+}
+function finishGame() {
+  const R = S.game.round; R.done = true; R.stars = starsFor(R.misses);
+  S.game.rounds++; S.game.best = Math.max(S.game.best || 0, R.stars);
+  R.fish = gameFish(R.stars);
+  S.game.hist.push({ at: now(), cats: R.cats, misses: R.misses, stars: R.stars }); if (S.game.hist.length > 60) S.game.hist = S.game.hist.slice(-60);
+  save(); GBUSY = false; renderGame();
+}
+function gameResult() {
+  const R = S.game.round; const capped = S.game.fishDay.n >= GAME_FISH_DAY;
+  $('#gresult').innerHTML = `<div class="card" style="text-align:center"><h2>Schatz gefunden!</h2>
+    <div class="stars big3">${starsHTML(R.stars)}</div>
+    <p>${R.targets.length} Fische gefunden · ${R.misses} ${R.misses === 1 ? 'Grabung' : 'Grabungen'} daneben</p>
+    <div class="list" style="text-align:left">${R.cats.map((id, k) => `<div class="li"><b>${clueShort(id, true)}</b> → ${esc(R.targets[k])}${R.perClue[k] ? ` <span class="small">(${R.perClue[k]}× daneben)</span>` : ' ✓'}</div>`).join('')}</div>
+    <p class="small">${capped ? 'Für heute hast du alle Spiel-Fische bekommen – morgen gibt es wieder neue. Spielen kannst du trotzdem!' : `Fische aus dem Spiel heute: ${S.game.fishDay.n} von ${GAME_FISH_DAY}.`}</p>
+    <div class="actions" style="justify-content:center"><button class="btn" data-act="gamenew">Neue Runde ›</button><button class="btn ghost" data-act="home">Zur Karte</button></div></div>`;
+}
+function gameHelp() {
+  const m = modal(`<div class="center"><div class="pel">${A.pelle({ wear: S.wear, tool: 'schaufel' })}</div><h2>So geht Pelles Spurensuche</h2></div>
+    <p>Auf dem Eisfeld liegen Fische unter dem Schnee versteckt. Jeder <b>Zettel</b> ist ein Sprach-Rätsel und verrät dir, unter welchem Wort der nächste Fisch liegt.</p>
+    <p>Tippe auf ein Feld – Pelle läuft hin und gräbt. Daneben gegraben? Dann bekommst du einen Tipp.</p>
+    <p>Wenn du alle Fische gefunden hast, wartet eine Schatzkiste. <b>3 Sterne</b> gibt es ohne Fehlgrabung.</p>
+    <p class="small">Mit jeder geschafften Station kommen neue Arten von Hinweisen dazu. Pro Tag gibt es höchstens ${GAME_FISH_DAY} Fische aus dem Spiel.</p>
+    <div class="actions" style="justify-content:center"><button class="btn" data-x="close">Los!</button></div>`);
+  $('[data-x="close"]', m).addEventListener('click', closeModal);
 }
 
 /* ───────────── Merkheft, Kiste, Checkliste, Schrank ───────────── */
@@ -2386,11 +2660,24 @@ function tabReport(root) {
       ${comps.map(c => `<tr><td>${esc(c.en)}</td><td>${c.n ? `${c.pts}/${c.n} (${c.of} tasks)` : '–'}</td><td>${c.tn ? `${c.tok}/${c.tn}` : '–'}</td><td>${c.pAll ? `${c.pOk} / ${c.pFix}` : '–'}</td><td>${starsHTML(c.stars)}</td></tr>`).join('')}</table>
       <p class="small">Finn's own ticks: ${D.K_ORDER.filter(k => S.self[k]).map(k => D.K[k].en).join('; ') || 'none yet'}</p></div>
     <div class="card"><h3>Not right the first time</h3>${mistakes.length ? `<table class="rep"><tr><th>Task</th><th>1st answer</th><th>2nd answer</th><th>Correct</th></tr>${mistakes.map(x => `<tr><td><b>${x.id}</b> ${esc(x.q)}</td><td>${esc(x.first || '–')}</td><td>${esc(x.second || '–')}${x.result === 'fail' ? ' ✗' : ' ✓'}</td><td>${esc(x.correct)}</td></tr>`).join('')}</table>` : '<p class="muted">Nothing yet.</p>'}</div>
+    <div class="card"><h3>Game: Pelles Spurensuche</h3>${gameReportHTML()}</div>
     <div class="card"><h3>Share with Claude</h3><p class="small">Export the progress file and upload it in the Baby Bees project to get an updated or more targeted version.</p>
       <div class="actions"><button class="btn sm" data-x="copyrep">Copy report (text)</button><button class="btn sm" data-x="export">Export for Claude (JSON)</button><button class="btn sm ghost" data-x="copyjson">Copy JSON</button></div></div>`;
   $('[data-x="copyrep"]', root).addEventListener('click', () => copyText(reportText()));
   $('[data-x="export"]', root).addEventListener('click', () => download(`pelles-schatzsuche-${S.name.toLowerCase()}-${new Date().toISOString().slice(0, 10)}.json`, exportJSON()));
   $('[data-x="copyjson"]', root).addEventListener('click', () => copyText(exportJSON()));
+}
+function gameStats() {
+  const bc = S.game.byCat || {};
+  const rows = Object.keys(bc).map(id => ({ id, label: clueShort(id), ok: bc[id].ok, miss: bc[id].miss })).sort((a, b) => b.miss - a.miss || a.ok - b.ok);
+  return { rounds: S.game.rounds, best: S.game.best, rows };
+}
+function gameReportHTML() {
+  const g = gameStats();
+  if (!g.rounds && !g.rows.length) return '<p class="muted">Not played yet. Each round has up to 5 clues; clue types unlock with each cleared station.</p>';
+  return `<p>Rounds finished: <b>${g.rounds}</b> · best: ${starsHTML(g.best)}</p>
+    <table class="rep"><tr><th>Clue type</th><th>Found</th><th>Wrong digs</th></tr>${g.rows.map(r => `<tr><td>${esc(r.label)}</td><td>${r.ok}</td><td>${r.miss}${r.miss > r.ok ? ' ⚠' : ''}</td></tr>`).join('')}</table>
+    <p class="small">Clue types with more wrong digs than finds (⚠) come up more often in new rounds.</p>`;
 }
 function reportText() {
   const { comps, mistakes } = reportData();
@@ -2401,6 +2688,9 @@ function reportText() {
   comps.forEach(c => L.push(`- ${c.en}: stations ${c.n ? `${c.pts}/${c.n}` : '–'}, mock test ${c.tn ? `${c.tok}/${c.tn}` : '–'}, paper ok/to fix ${c.pOk}/${c.pFix}`));
   L.push('', 'Not right the first time:');
   mistakes.forEach(x => L.push(`- ${x.id} ${x.q} | 1st: ${x.first || '–'} | 2nd: ${x.second || '–'} | correct: ${x.correct}`));
+  const gs = gameStats();
+  L.push('', `Game (Spurensuche): ${gs.rounds} rounds, best ${gs.best} stars`);
+  gs.rows.slice(0, 8).forEach(r => L.push(`- ${r.label}: found ${r.ok}, wrong digs ${r.miss}`));
   L.push('', 'Paper tasks:');
   Object.keys(S.paper).forEach(k => L.push(`- ${k}: ${PST_EN[S.paper[k].status] || S.paper[k].status}${S.paper[k].note ? ' – note: ' + S.paper[k].note : ''}`));
   return L.join('\n');
@@ -2410,7 +2700,7 @@ function exportJSON() {
     stations: S.stages, found: S.found, final: S.final,
     tasks: Object.fromEntries(Object.keys(S.tasks).map(id => [id, Object.assign({ k: TASK[id].t.k, q: strip(TASK[id].t.q), correct: TASK[id].t.ex || '' }, S.tasks[id])])),
     paper: Object.fromEntries(Object.keys(S.paper).map(k => [k, Object.assign({ title: TASK[S.paper[k].id] ? TASK[S.paper[k].id].t.title : '' }, S.paper[k])])),
-    tests: S.tests, testInProgress: S.testRun && !S.testRun.done ? S.testRun : null, kiste: Object.keys(S.kiste), checklistSelf: S.self, clueMisses: S.clueMiss, log: S.log };
+    tests: S.tests, testInProgress: S.testRun && !S.testRun.done ? S.testRun : null, kiste: Object.keys(S.kiste), checklistSelf: S.self, clueMisses: S.clueMiss, game: { rounds: S.game.rounds, best: S.game.best, byCat: S.game.byCat, hist: S.game.hist }, log: S.log };
   return JSON.stringify(out, null, 1);
 }
 function tabNotes(root) {
@@ -2499,12 +2789,15 @@ document.addEventListener('click', (e) => {
   else if (a === 'test') startTest();
   else if (a === 'newtest') startTest(true);
   else if (a === 'diplom') diplomaModal();
+  else if (a === 'game') showGame(false);
+  else if (a === 'gamenew') showGame(true);
+  else if (a === 'gamehelp') gameHelp();
   else if (a === 'merkzettel' && CUR && CUR.kind === 'stage') { const st = STAGE[CUR.n]; const m = modal(`<div class="merke"><h2>Pelles Merkzettel</h2>${st.merke}</div><div class="actions"><button class="btn" data-x="close">Zurück zur Aufgabe</button></div>`, { wide: true }); $('[data-x="close"]', m).addEventListener('click', closeModal); }
 });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const s = $('.scrim'); if (s) s.remove(); } });
 
 /* expose for tests */
-window.__PE = { get S() { return S; }, TASK, STAGE, save, showHome, parseTap, parseGaps, judgeField, norm, buildTestItems };
+window.__PE = { get S() { return S; }, TASK, STAGE, save, showHome, parseTap, parseGaps, judgeField, norm, buildTestItems, makeRound, gameCats, GW, GCAT };
 
 renderTop();
 showHome();
